@@ -1,0 +1,23 @@
+public class CompareClass {
+	
+	int fir = 12;
+	
+	public int testExcep() {
+		try{
+			throw new IllegalAccessException();
+		}
+		catch(IllegalAccessException e)
+		{
+			return 5;
+		}
+		finally{
+			return 10;
+		}
+		
+		
+	}
+	
+	
+
+	
+}

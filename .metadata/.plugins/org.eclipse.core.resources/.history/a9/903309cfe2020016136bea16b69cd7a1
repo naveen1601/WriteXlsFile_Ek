@@ -1,0 +1,164 @@
+package eko.pkg;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import eko.test.pkg.CopyFile;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class WriteXlxs {
+    //private static final String FILE_PATH = "C:/Users/naveen.srivastava/Desktop/TestDoc/testWriteStudents.xlsx";
+    
+    //We are making use of a single instance to prevent multiple write access to same file.
+    private static final WriteXlxs INSTANCE = new WriteXlxs();
+
+    public static WriteXlxs getInstance() {
+        return INSTANCE;
+    }
+    
+    static String imps_Ppi_AllTr = "select count(*),sum(nt.txamount),nt.txstatus from nefttransaction nt left join ekotransaction et on nt.EkoTrxnId =et.TransactionID  "
+    									+ "where nt.destination=2 and nt.mode=1 and et.TypeID=81 and nt.trackingnumber is not null group by nt.txstatus;";
+    
+    static String imps_Ppi_Null = "select sum(if(nt.trackingnumber is null and nt.txstatus <>7,'1','0')) as null_response_trxn,"
+    		+ "sum(if(nt.trackingnumber is null and nt.txstatus <>7,nt.txamount,'0')) as null_response_trxn_vol,"
+    		+ "sum(if(nt.reconstatus is null,'1','0')) as timeout_trxn,sum(if(nt.reconstatus is null,txamount,'0')) as timeout_trxn_vol "
+    		+ "from  nefttransaction nt left join ekotransaction et on nt.EkoTrxnId =et.TransactionID where nt.destination=2 and nt.mode=1 and et.TypeID=81;";
+    
+    static String imps_Icici_AllTr ="select count(*),sum(nt.txamount),nt.txstatus from nefttransaction nt left join ekotransaction et on nt.EkoTrxnId =et.TransactionID "
+    		+ "where nt.destination=1 and nt.mode=1 and et.TypeID=81 and nt.trackingnumber is not null group by nt.txstatus;";
+    
+    static String imps_Icici_Null ="";
+
+    public static void main(String args[]){
+    	// Using XSSF for xlsx format, for xls use HSSF
+    	String fileName;
+    	XSSFWorkbook workbook;
+        FileInputStream input_document;
+        Sheet worksheet;
+        Cell cell = null;
+        CopyFile copyFile;
+        Statement stmt;
+        ResultSet rs;
+        ConnectionProp conn = new ConnectionProp();
+        //fileName ="C:/Users/naveen.srivastava/Desktop/TestDoc/19_2_EKO_Business_Transaction.xlsx";
+        
+
+        try {
+        	copyFile = new CopyFile();
+            fileName = copyFile.copy();
+            System.out.println("copied file name is "+fileName);
+            conn.connectC();
+            stmt= conn.con.createStatement();
+            
+            //IMPS PPI
+            rs = stmt.executeQuery(imps_Ppi_AllTr);
+			input_document= new FileInputStream(new File(fileName));
+			workbook = new XSSFWorkbook(input_document);
+			worksheet = workbook.getSheetAt(0);
+			cell = null;
+			//row starts with 0 in java, 4 in java prgm = 5 in excel sheet. Same is applicable in column
+			// 
+			while(rs.next()){
+				switch (rs.getInt(3)) {
+				case 1:
+					cell = worksheet.getRow(2).getCell(1);
+					System.out.println("cell column is "+cell.getColumnIndex()+"   row is "+cell.getRowIndex());
+					System.out.println("cell value is "+cell.getNumericCellValue());
+					cell.setCellValue(rs.getInt(1));
+					cell = worksheet.getRow(2).getCell(2);
+					System.out.println("cell column is "+cell.getColumnIndex()+"   row is "+cell.getRowIndex());
+					System.out.println("cell value is "+cell.getNumericCellValue());
+					cell.setCellValue(rs.getInt(2));
+					break;
+				case 3:
+					cell = worksheet.getRow(3).getCell(1);
+					cell.setCellValue(rs.getInt(1));
+					cell = worksheet.getRow(3).getCell(2);
+					cell.setCellValue(rs.getInt(2));
+					break;
+				case 4:
+					cell = worksheet.getRow(4).getCell(1);
+					cell.setCellValue(rs.getInt(1));
+					cell = worksheet.getRow(4).getCell(2);
+					cell.setCellValue(rs.getInt(2));
+					break;
+				case 6:
+					cell = worksheet.getRow(5).getCell(1);
+					cell.setCellValue(rs.getInt(1));
+					cell = worksheet.getRow(5).getCell(2);
+					cell.setCellValue(rs.getInt(2));
+					break;
+				case 7:
+					cell = worksheet.getRow(6).getCell(1);
+					cell.setCellValue(rs.getInt(1));
+					cell = worksheet.getRow(6).getCell(2);
+					cell.setCellValue(rs.getInt(2));
+					break;
+				case 2:
+					cell = worksheet.getRow(7).getCell(1);
+					cell.setCellValue(rs.getInt(1));
+					cell = worksheet.getRow(7).getCell(2);
+					cell.setCellValue(rs.getInt(2));
+					break;
+				case 14:
+					cell = worksheet.getRow(8).getCell(1);
+					cell.setCellValue(rs.getInt(1));
+					cell = worksheet.getRow(8).getCell(2);
+					cell.setCellValue(rs.getInt(2));
+					break;
+				default:
+					break;
+				}
+			}
+			// IMPS PPI Null response
+			rs = stmt.executeQuery(imps_Ppi_Null);
+			while(rs.next())
+			{
+				cell = worksheet.getRow(9).getCell(1);
+				cell.setCellValue(rs.getInt(1));
+				cell = worksheet.getRow(9).getCell(2);
+				cell.setCellValue(rs.getInt(2));
+			}//IMPS PPI Ends
+			// IMPS ICICI 
+			
+			
+			
+			XSSFFormulaEvaluator.evaluateAllFormulaCells(workbook);
+			input_document.close();
+			
+			FileOutputStream output_file =new FileOutputStream(new File(fileName));
+			workbook.write(output_file);
+			output_file.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        catch (SQLException e) {
+        	e.printStackTrace();
+		}
+        catch (ClassNotFoundException e) {
+        	e.printStackTrace();
+		}
+        catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+    }
+}

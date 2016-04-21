@@ -1,0 +1,31 @@
+import java.util.ArrayList;
+import java.util.Collections;
+
+
+public class TestCompare {
+
+	public static void main(String[] args) {
+		int a1 = 10;
+		int a2 = 15;
+		int a3 = 8;
+		int a4 = 12;
+		int lastIndex;
+		
+		
+		
+		
+		ArrayList<Integer> arr = new ArrayList<Integer>();
+		
+		arr.add(a1);
+		arr.add(a2);
+		arr.add(a3);
+		arr.add(a4);
+		
+		Collections.sort(arr);
+		lastIndex = arr.size() -1;
+
+		System.out.println("Highest number is "+arr.get(lastIndex));
+
+	}
+
+}

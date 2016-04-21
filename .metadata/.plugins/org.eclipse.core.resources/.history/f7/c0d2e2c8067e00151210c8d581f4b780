@@ -1,0 +1,15 @@
+public class CompareClass {
+	
+	int fir = 12;
+	
+	try{
+		throw new IllegalAccessException();
+	}
+	catch(IllegalAccessException e)
+	{
+		
+	}
+	
+
+	
+}

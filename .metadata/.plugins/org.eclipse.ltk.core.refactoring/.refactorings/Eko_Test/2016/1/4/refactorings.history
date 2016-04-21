@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;Student.java&apos; to &apos;EKO_Write_CsvFile/src/eko.pkg&apos;&#x0D;&#x0A;- Original project: &apos;Eko_Test&apos;&#x0D;&#x0A;- Destination element: &apos;EKO_Write_CsvFile/src/eko.pkg&apos;&#x0D;&#x0A;- Original element: &apos;Student.java&apos;" description="Copy compilation unit" destination="=EKO_Write_CsvFile/src&lt;eko.pkg" element1="/src&lt;{Student.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1453196100830" units="1" version="1.0"/>
+</session>

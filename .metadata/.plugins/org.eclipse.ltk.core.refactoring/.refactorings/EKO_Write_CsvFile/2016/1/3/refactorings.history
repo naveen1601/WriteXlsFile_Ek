@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename compilation unit &apos;eko.pkg.Connection.java&apos; to &apos;ConnectionClass.java&apos;&#x0D;&#x0A;- Original project: &apos;EKO_Write_CsvFile&apos;&#x0D;&#x0A;- Original element: &apos;eko.pkg.Connection.java&apos;&#x0D;&#x0A;- Renamed element: &apos;eko.pkg.ConnectionClass.java&apos;" description="Rename compilation unit &apos;Connection.java&apos;" flags="2" id="org.eclipse.jdt.ui.rename.compilationunit" input="/src&lt;eko.pkg{Connection.java" name="ConnectionClass.java" references="false" stamp="1452607530082" version="1.0"/>
+</session>
